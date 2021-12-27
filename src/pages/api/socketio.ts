@@ -1,10 +1,12 @@
+import { NextApiRequest } from 'next';
+import { NextApiResponseServerIO } from '../../types/next';
 import { Server } from 'socket.io';
 
-const ioHandler = (req, res) => {
+const ioHandler = (req: NextApiRequest, res: NextApiResponseServerIO) => {
   if (!res.socket.server.io) {
-    console.log('*First use, starting socket.io');
+    console.log('new socket.io server');
 
-    const io = new Server(res.socket.server);
+    const io = new Server(res.socket.server as any);
 
     io.on('connection', (socket) => {
       socket.broadcast.emit('a user connected');
