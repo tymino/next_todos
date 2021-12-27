@@ -1,4 +1,9 @@
+/* eslint-disable import/no-anonymous-default-export */
+export default (req, res) => {
+  if (req.method === 'POST') {
+    const message = req.body;
+    res.socket.server.io.emit('message', message);
 
-export default function handler(req, res) {
-  res.status(200).json({ name: 'John Doe' })
-}
+    res.status(201).json(message);
+  }
+};
