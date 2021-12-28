@@ -10,17 +10,21 @@ const Home: React.FC = () => {
   const [chat, setChat] = React.useState<any>([]);
 
   const [sock, setSock] = React.useState<any>(null);
+  const [room, setRoom] = React.useState<string>('public');
+
+  const handlerSelectRoom = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const room = e.currentTarget.value;
+
+    setRoom(room);
+  };
 
   const handleSubmit = async () => {
-    console.log(sock.id);
-
     const resp = await fetch('/api/hello', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        id: sock.id || 'none',
         message: value,
       }),
     });
@@ -29,14 +33,11 @@ const Home: React.FC = () => {
   };
 
   React.useEffect(() => {
-    fetch('/api/socketio').finally(async () => {
+    fetch('/api/socket').finally(async () => {
       const socket = io(process.env.URL as string);
-
-      setSock(socket);
 
       socket.on('connect', () => {
         console.log('connect');
-        socket.emit('hello');
       });
 
       socket.on('hello', (data) => {
@@ -68,6 +69,10 @@ const Home: React.FC = () => {
 
       <main>
         <h1>Socket.io</h1>
+        <select value={room} onChange={handlerSelectRoom}>
+          <option value="public">Public</option>
+          <option value="public2">Public 2</option>
+        </select>
         <div>
           {chat.map((e: any, index: number) => (
             <div key={`${e}${index}`}>{e}</div>
