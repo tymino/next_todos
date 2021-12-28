@@ -9,17 +9,10 @@ const Home: React.FC = () => {
   const [value, setValue] = React.useState<string>('');
   const [chat, setChat] = React.useState<any>([]);
 
-  const [sock, setSock] = React.useState<any>(null);
-  const [room, setRoom] = React.useState<string>('public');
-
-  const handlerSelectRoom = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const room = e.currentTarget.value;
-
-    setRoom(room);
-  };
+  // const [sock, setSock] = React.useState<any>(null);
 
   const handleSubmit = async () => {
-    const resp = await fetch('/api/hello', {
+    const resp = await fetch('/api/task/add', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -62,17 +55,13 @@ const Home: React.FC = () => {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Todos | Next.js</title>
+        <title>Frontend Mentor | Todo app</title>
         <meta name="description" content="Todos - Next.js" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png"></link>
       </Head>
 
       <main>
         <h1>Socket.io</h1>
-        <select value={room} onChange={handlerSelectRoom}>
-          <option value="public">Public</option>
-          <option value="public2">Public 2</option>
-        </select>
         <div>
           {chat.map((e: any, index: number) => (
             <div key={`${e}${index}`}>{e}</div>
