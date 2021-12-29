@@ -57,7 +57,11 @@ const Home: React.FC = () => {
       <Head>
         <title>Frontend Mentor | Todo app</title>
         <meta name="description" content="Todos - Next.js" />
-        <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png"></link>
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="./images/favicon-32x32.png"></link>
       </Head>
 
       <main>
