@@ -6,7 +6,7 @@
 const nextConfig = {
   env: {
     // URL: 'http://localhost:3000',
-    URL: 'https://secret-message-lime.vercel.app',
+    URL: 'https://next-todos-socket.vercel.app',
   },
   reactStrictMode: true,
 };
