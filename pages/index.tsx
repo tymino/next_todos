@@ -4,52 +4,50 @@ import Head from 'next/head';
 import React from 'react';
 
 import io from 'socket.io-client';
+import { Socket } from 'socket.io';
 
 const Home: React.FC = () => {
+  const [socket, setSocket] = React.useState<any>(null);
+
   const [value, setValue] = React.useState<string>('');
   const [chat, setChat] = React.useState<any>([]);
 
-  // const [sock, setSock] = React.useState<any>(null);
-
   const handleSubmit = async () => {
-    const resp = await fetch('/api/task/add', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        message: value,
-      }),
-    });
+    // const resp = await fetch('/api/task/add', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({
+    //     message: value,
+    //   }),
+    // });
 
-    if (resp.ok) setValue('');
+    socket.emit('test', value);
+    setValue('');
   };
 
   React.useEffect(() => {
-    fetch(`${process.env.URL}/api/socket`).finally(async () => {
-      const socket = io();
+    const newSocket = io();
 
-      socket.on('connect', () => {
-        console.log('connect');
-      });
+    setSocket(newSocket);
 
-      socket.on('hello', (data) => {
-        console.log('hello', data);
-      });
-
-      socket.on('a user connected', () => {
-        console.log('a user connected');
-      });
-
-      socket.on('disconnect', () => {
-        console.log('disconnect');
-      });
-
-      socket.on('message', (message) => {
-        chat.push(message);
-        setChat([...chat]);
-      });
+    newSocket.on('now', (data) => {
+      setValue(data.message);
     });
+
+    newSocket.on('test', (message: any) => {
+      chat.push(message);
+      setChat([...chat]);
+    });
+
+    // socket.on('connect', () => {
+    //   console.log('connect');
+    // });
+
+    // socket.on('disconnect', () => {
+    //   console.log('disconnect');
+    // });
   }, []);
 
   return (
