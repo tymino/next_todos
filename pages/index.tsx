@@ -3,7 +3,7 @@ import styles from '../styles/Home.module.sass';
 import Head from 'next/head';
 import React from 'react';
 
-import { io } from 'socket.io-client';
+import io from 'socket.io-client';
 
 const Home: React.FC = () => {
   const [value, setValue] = React.useState<string>('');
@@ -27,7 +27,7 @@ const Home: React.FC = () => {
 
   React.useEffect(() => {
     fetch(`${process.env.URL}/api/socket`).finally(async () => {
-      const socket = io(process.env.URL as string);
+      const socket = io();
 
       socket.on('connect', () => {
         console.log('connect');
