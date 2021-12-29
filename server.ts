@@ -21,7 +21,10 @@ nextApp.prepare().then(() => {
     socket.emit('now', { message: 'server Next test' });
 
     socket.on('test', (data: any) => {
-      socket.emit('test', data);
+      io.emit('test', data);
+
+      const strTest = 'QQ' + data;
+      // socket.broadcast.emit('test', strTest);
     })
   });
 
