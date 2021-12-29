@@ -26,7 +26,7 @@ const Home: React.FC = () => {
   };
 
   React.useEffect(() => {
-    fetch('/api/socket').finally(async () => {
+    fetch(`${process.env.URL}/api/socket`).finally(async () => {
       const socket = io(process.env.URL as string);
 
       socket.on('connect', () => {
