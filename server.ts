@@ -10,7 +10,7 @@ const dev = process.env.NODE_ENV !== 'production';
 const nextApp = next({ dev });
 const nextHandler = nextApp.getRequestHandler();
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 nextApp.prepare().then(() => {
   const app = require('express')();
