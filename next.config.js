@@ -5,8 +5,8 @@
  **/
 const nextConfig = {
   env: {
-    // URL: 'http://localhost:3000',
-    URL: 'https://next-todos-socket.vercel.app',
+    URL: 'http://localhost:3000',
+    // URL: 'https://next-todos-socket.vercel.app',
   },
   reactStrictMode: true,
 };
