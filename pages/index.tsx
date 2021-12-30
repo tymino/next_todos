@@ -4,7 +4,6 @@ import Head from 'next/head';
 import React from 'react';
 
 import io from 'socket.io-client';
-import { Socket } from 'socket.io';
 
 const Home: React.FC = () => {
   const [socket, setSocket] = React.useState<any>(null);
@@ -13,16 +12,6 @@ const Home: React.FC = () => {
   const [chat, setChat] = React.useState<any>([]);
 
   const handleSubmit = async () => {
-    // const resp = await fetch('/api/task/add', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({
-    //     message: value,
-    //   }),
-    // });
-
     socket.emit('test', value);
     setValue('');
   };
@@ -59,7 +48,8 @@ const Home: React.FC = () => {
           rel="icon"
           type="image/png"
           sizes="32x32"
-          href="./images/favicon-32x32.png"></link>
+          href="./favicon-32x32.png"
+        />
       </Head>
 
       <main>

@@ -1,21 +1,19 @@
-// const next = require('next');
 import next from 'next';
 
-// import express from 'express';
-// import { createServer } from 'http';
-// import { Server } from 'socket.io';
-
+import express from 'express';
+import { createServer } from 'http';
+import { Server } from 'socket.io';
 
 const dev = process.env.NODE_ENV !== 'production';
 const nextApp = next({ dev });
 const nextHandler = nextApp.getRequestHandler();
 
-const PORT = process.env.PORT || 3000;
-
 nextApp.prepare().then(() => {
-  const app = require('express')();
-  const server = require('http').Server(app);
-  const io = require('socket.io')(server);
+  const PORT = process.env.PORT || 3000;
+
+  const app = express();
+  const server = createServer(app);
+  const io = new Server(server);
 
   io.on('connect', (socket: any) => {
     socket.emit('now', { message: 'server Next test' });
@@ -25,7 +23,7 @@ nextApp.prepare().then(() => {
 
       const strTest = 'QQ' + data;
       // socket.broadcast.emit('test', strTest);
-    })
+    });
   });
 
   app.get('*', (req: any, res: any) => {
