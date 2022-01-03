@@ -15,26 +15,15 @@ nextApp.prepare().then(() => {
   const server = createServer(app);
   const io = new Server(server);
 
-  io.on('connect', (socket: any) => {
-    socket.join('public');
+  io.on('connection', (socket) => {
     socket.emit('now', { message: 'server Next test' });
 
-    socket.on('room', (roomName: string) => {
-      socket.leave('public');
-      socket.join(roomName);
-    });
-
-    socket.on('test', (data: any) => {
+    socket.on('test', (data) => {
       io.emit('test', data);
-
-      const strTest = 'QQ ' + data;
-      socket.to("private").emit('test', strTest);
     });
   });
 
-  app.get('*', (req: any, res: any) => {
-    return nextHandler(req, res);
-  });
+  app.get('*', (req, res) => nextHandler(req, res));
 
   server.listen(PORT, () => {
     console.log('Ready server.');

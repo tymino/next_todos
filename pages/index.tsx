@@ -1,39 +1,29 @@
 import styles from '../styles/Home.module.sass';
 
+import { io, Socket } from 'socket.io-client';
+
 import Head from 'next/head';
 import React from 'react';
 
-import io from 'socket.io-client';
+import Background from '../components/Background';
 
 const Home: React.FC = () => {
-  const [socket, setSocket] = React.useState<any>(null);
+  const [socket, setSocket] = React.useState<Socket>(io);
 
   const [value, setValue] = React.useState<string>('');
   const [chat, setChat] = React.useState<any>([]);
-  const [room, setRoom] = React.useState<string>('public');
 
   const handleSubmit = async () => {
     socket.emit('test', value);
     setValue('');
   };
 
-  const handleChangeRoom = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const roomName = e.currentTarget.value;
-
-    socket.emit('room', roomName);
-    setRoom(roomName);
-  };
-
   React.useEffect(() => {
-    const newSocket = io();
-
-    setSocket(newSocket);
-
-    newSocket.on('now', (data) => {
+    socket.on('now', (data) => {
       setValue(data.message);
     });
 
-    newSocket.on('test', (message: any) => {
+    socket.on('test', (message: any) => {
       chat.push(message);
       setChat([...chat]);
     });
@@ -45,6 +35,8 @@ const Home: React.FC = () => {
     // socket.on('disconnect', () => {
     //   console.log('disconnect');
     // });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -60,23 +52,10 @@ const Home: React.FC = () => {
         />
       </Head>
 
-      <main>
-        <h1>Socket.io</h1>
-        <select onChange={handleChangeRoom} value={room}>
-          <option value="public">Public</option>
-          <option value="private">Private</option>
-        </select>
-        <div>
-          {chat.map((e: any, index: number) => (
-            <div key={`${e}${index}`}>{e}</div>
-          ))}
-        </div>
-        <input
-          type="text"
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-        />
-        <button onClick={handleSubmit}>PUSH</button>
+      <Background themeMode='dark' />
+
+      <main className={styles.main}>
+        
       </main>
     </div>
   );
