@@ -10,10 +10,18 @@ const Home: React.FC = () => {
 
   const [value, setValue] = React.useState<string>('');
   const [chat, setChat] = React.useState<any>([]);
+  const [room, setRoom] = React.useState<string>('public');
 
   const handleSubmit = async () => {
     socket.emit('test', value);
     setValue('');
+  };
+
+  const handleChangeRoom = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const roomName = e.currentTarget.value;
+
+    socket.emit('room', roomName);
+    setRoom(roomName);
   };
 
   React.useEffect(() => {
@@ -54,6 +62,10 @@ const Home: React.FC = () => {
 
       <main>
         <h1>Socket.io</h1>
+        <select onChange={handleChangeRoom} value={room}>
+          <option value="public">Public</option>
+          <option value="private">Private</option>
+        </select>
         <div>
           {chat.map((e: any, index: number) => (
             <div key={`${e}${index}`}>{e}</div>

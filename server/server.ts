@@ -16,13 +16,19 @@ nextApp.prepare().then(() => {
   const io = new Server(server);
 
   io.on('connect', (socket: any) => {
+    socket.join('public');
     socket.emit('now', { message: 'server Next test' });
+
+    socket.on('room', (roomName: string) => {
+      socket.leave('public');
+      socket.join(roomName);
+    });
 
     socket.on('test', (data: any) => {
       io.emit('test', data);
 
-      const strTest = 'QQ' + data;
-      // socket.broadcast.emit('test', strTest);
+      const strTest = 'QQ ' + data;
+      socket.to("private").emit('test', strTest);
     });
   });
 
