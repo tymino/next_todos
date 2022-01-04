@@ -1,24 +1,27 @@
+/* eslint-disable @next/next/no-page-custom-font */
 import styles from '../styles/Home.module.sass';
+import Head from 'next/head';
 
 import { io, Socket } from 'socket.io-client';
 
-import Head from 'next/head';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 import Background from '../components/Background';
+import Content from '../components/Content';
 
 const Home: React.FC = () => {
-  const [socket, setSocket] = React.useState<Socket>(io);
+  const [theme, setTheme] = useState<string>('light');
+  const [socket, setSocket] = useState<Socket>(io);
 
-  const [value, setValue] = React.useState<string>('');
-  const [chat, setChat] = React.useState<any>([]);
+  const [value, setValue] = useState<string>('');
+  const [chat, setChat] = useState<any>([]);
 
   const handleSubmit = async () => {
     socket.emit('test', value);
     setValue('');
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     socket.on('now', (data) => {
       setValue(data.message);
     });
@@ -50,13 +53,15 @@ const Home: React.FC = () => {
           sizes="32x32"
           href="./favicon-32x32.png"
         />
+
+        <link
+          href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&display=swap"
+          rel="stylesheet"
+        />
       </Head>
 
-      <Background themeMode='dark' />
-
-      <main className={styles.main}>
-        
-      </main>
+      <Background theme={theme} />
+      <Content />
     </div>
   );
 };

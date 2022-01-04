@@ -3,25 +3,25 @@ import React from 'react';
 import styles from '../styles/components/Background.module.sass';
 
 interface IBackgroundProps {
-  themeMode: 'string';
+  theme: string;
 }
 
-const Background: React.FC<IBackgroundProps> = ({ themeMode }) => {
+const Background: React.FC<IBackgroundProps> = ({ theme }) => {
   return (
     <picture className={styles.picture}>
       <source
         className={styles.sourceMobile}
         media="(max-width: 468px)"
-        srcSet={`./images/bg-mobile-${themeMode}.jpg`}
+        srcSet={`./images/bg-mobile-${theme}.jpg`}
       />
       <source
         className={styles.sourceMobile}
         media="(max-width: 468px)"
-        srcSet={`./images/bg-mobile-${themeMode}.jpg`}
+        srcSet={`./images/bg-mobile-${theme}.jpg`}
       />
       <img
         className={styles.sourceDesktop}
-        src={`/images/bg-desktop-${themeMode}.jpg`}
+        src={`/images/bg-desktop-${theme}.jpg`}
         alt="background"
       />
     </picture>
