@@ -8,6 +8,7 @@ import React, { useState, useEffect } from 'react';
 
 import Background from '../components/Background';
 import Content from '../components/Content';
+import Attribution from './Attribution';
 
 const Home: React.FC = () => {
   const [theme, setTheme] = useState<string>('light');
@@ -62,6 +63,7 @@ const Home: React.FC = () => {
 
       <Background theme={theme} />
       <Content />
+      <Attribution />
     </div>
   );
 };
