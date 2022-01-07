@@ -2,46 +2,18 @@
 import styles from '../styles/Home.module.sass';
 import Head from 'next/head';
 
-import { io, Socket } from 'socket.io-client';
-
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import Background from '../components/Background';
 import Content from '../components/Content';
-import Attribution from './Attribution';
+import Attribution from '../components/Attribution';
 
 const Home: React.FC = () => {
   const [theme, setTheme] = useState<string>('light');
-  const [socket, setSocket] = useState<Socket>(io);
 
-  const [value, setValue] = useState<string>('');
-  const [chat, setChat] = useState<any>([]);
-
-  const handleSubmit = async () => {
-    socket.emit('test', value);
-    setValue('');
+  const changeTheme = (actualTheme: string) => {
+      setTheme(actualTheme);
   };
-
-  useEffect(() => {
-    socket.on('now', (data) => {
-      setValue(data.message);
-    });
-
-    socket.on('test', (message: any) => {
-      chat.push(message);
-      setChat([...chat]);
-    });
-
-    // socket.on('connect', () => {
-    //   console.log('connect');
-    // });
-
-    // socket.on('disconnect', () => {
-    //   console.log('disconnect');
-    // });
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <div className={styles.container}>
@@ -62,7 +34,7 @@ const Home: React.FC = () => {
       </Head>
 
       <Background theme={theme} />
-      <Content />
+      <Content theme={theme} changeTheme={changeTheme} />
       <Attribution />
     </div>
   );
