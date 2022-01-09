@@ -8,7 +8,7 @@ const store: ITodo[] = [
   },
   {
     id: 'item-2',
-    isComplete: false,
+    isComplete: true,
     content: 'купить сыр',
   },
 ];

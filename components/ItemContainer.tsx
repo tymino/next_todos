@@ -12,6 +12,8 @@ import {
   DraggableStateSnapshot,
 } from 'react-beautiful-dnd';
 
+import Item from './Item';
+
 import ITodo from '../types/db';
 
 interface IItemContainer {
@@ -35,15 +37,15 @@ const ItemContainer: React.FC<IItemContainer> = ({ items, setItems }) => {
     padding: grid * 2,
     margin: `0 0 ${grid}px 0`,
     // change background colour if dragging
-    background: isDragging ? 'lightgreen' : 'grey',
+    background: isDragging ? 'lightgreen' : 'lightgrey',
     // styles we need to apply on draggables
     ...draggableStyle,
   });
 
   const getListStyle = (isDraggingOver: boolean) => ({
     background: isDraggingOver ? 'lightblue' : 'lightgrey',
-    padding: grid,
-    width: 250,
+    // padding: grid,
+    // width: 250,
   });
 
   const onDragEnd = (result: DropResult) => {
@@ -74,7 +76,7 @@ const ItemContainer: React.FC<IItemContainer> = ({ items, setItems }) => {
                         providedDraggable.draggableProps.style,
                         snapshotDraggable.isDragging,
                       )}>
-                      {item.content}
+                      <Item data={item} />
                     </div>
                     {/* {providedDraggable.placeholder} */}
                   </div>
