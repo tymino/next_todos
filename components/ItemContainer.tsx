@@ -1,11 +1,91 @@
 import React from 'react';
 import style from '../styles/components/ItemContainer.module.sass';
 
-const ItemContainer: React.FC = () => {
+import {
+  DragDropContext,
+  Draggable,
+  Droppable,
+  DroppableProvided,
+  DropResult,
+  DroppableStateSnapshot,
+  DraggableProvided,
+  DraggableStateSnapshot,
+} from 'react-beautiful-dnd';
+
+import ITodo from '../types/db';
+
+interface IItemContainer {
+  items: ITodo[];
+  setItems: React.Dispatch<React.SetStateAction<ITodo[]>>;
+}
+
+const ItemContainer: React.FC<IItemContainer> = ({ items, setItems }) => {
+  const reorder = (list: ITodo[], startIndex: number, endIndex: number): ITodo[] => {
+    const [removed] = list.splice(startIndex, 1);
+    list.splice(endIndex, 0, removed);
+
+    return list;
+  };
+
+  const grid = 8;
+
+  const getItemStyle = (draggableStyle: any, isDragging: boolean) => ({
+    // some basic styles to make the items look a bit nicer
+    userSelect: 'none',
+    padding: grid * 2,
+    margin: `0 0 ${grid}px 0`,
+    // change background colour if dragging
+    background: isDragging ? 'lightgreen' : 'grey',
+    // styles we need to apply on draggables
+    ...draggableStyle,
+  });
+
+  const getListStyle = (isDraggingOver: boolean) => ({
+    background: isDraggingOver ? 'lightblue' : 'lightgrey',
+    padding: grid,
+    width: 250,
+  });
+
+  const onDragEnd = (result: DropResult) => {
+    if (!result.destination) return;
+
+    const localItems: ITodo[] = reorder(items, result.source.index, result.destination.index);
+
+    setItems(localItems);
+  };
+
   return (
-    <div>
-      
-    </div>
+    <DragDropContext onDragEnd={onDragEnd}>
+      <Droppable droppableId="droppable">
+        {(provided: DroppableProvided, snapshot: DroppableStateSnapshot) => (
+          <div
+            ref={provided.innerRef}
+            style={getListStyle(snapshot.isDraggingOver)}
+            {...provided.droppableProps}>
+            {items.map((item: ITodo, index: number) => (
+              <Draggable key={item.id} draggableId={item.id} index={index}>
+                {(providedDraggable: DraggableProvided, snapshotDraggable: DraggableStateSnapshot) => (
+                  <div>
+                    <div
+                      ref={providedDraggable.innerRef}
+                      {...providedDraggable.dragHandleProps}
+                      {...providedDraggable.draggableProps}
+                      style={getItemStyle(
+                        providedDraggable.draggableProps.style,
+                        snapshotDraggable.isDragging,
+                      )}>
+                      {item.content}
+                    </div>
+                    {/* {providedDraggable.placeholder} */}
+                  </div>
+                )}
+              </Draggable>
+            ))}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
+    </DragDropContext>
   );
 };
 

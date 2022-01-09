@@ -4,6 +4,8 @@ import express from 'express';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 
+import store from './db';
+
 const dev = process.env.NODE_ENV !== 'production';
 const nextApp = next({ dev });
 const nextHandler = nextApp.getRequestHandler();
@@ -16,7 +18,7 @@ nextApp.prepare().then(() => {
   const io = new Server(server);
 
   io.on('connection', (socket) => {
-    socket.emit('now', { message: 'server Next test' });
+    socket.emit('todos:init', store);
 
     socket.on('test', (data) => {
       io.emit('test', data);

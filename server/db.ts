@@ -1,17 +1,13 @@
-interface ITodo {
-  id: number;
-  isComplete: boolean;
-  content: string;
-}
+import ITodo from '../types/db';
 
 const store: ITodo[] = [
   {
-    id: 0,
+    id: 'item-1',
     isComplete: false,
     content: 'купить хлеб',
   },
   {
-    id: 1,
+    id: 'item-2',
     isComplete: false,
     content: 'купить сыр',
   },
