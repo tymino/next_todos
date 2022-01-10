@@ -32,11 +32,13 @@ const ItemContainer: React.FC<IItemContainer> = ({ items, setItems }) => {
   const getItemStyle = (draggableStyle: any, isDragging: boolean) => ({
     userSelect: 'none',
     background: isDragging ? 'lightgreen' : 'lightgrey',
+    borderRadius: '4px',
     ...draggableStyle,
   });
 
   const getListStyle = (isDraggingOver: boolean) => ({
     background: isDraggingOver ? 'lightblue' : 'lightgrey',
+    borderRadius: '4px',
   });
 
   const onDragEnd = (result: DropResult) => {
