@@ -13,7 +13,8 @@ const Input: React.FC<IInputProps> = ({ inputValue, setInputValue }) => {
 
   return (
     <div className={style.container}>
-      <input type="text" value={inputValue} onChange={handleInputChange} />
+      <div className={style.addButton}></div>
+      <input className={style.input} type="text" value={inputValue} onChange={handleInputChange} placeholder="Create a new todo..." />
     </div>
   );
 };

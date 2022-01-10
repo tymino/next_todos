@@ -6,7 +6,7 @@ interface ILogoProps {
 }
 
 const Logo: React.FC<ILogoProps> = ({ title }) => {
-  return <div>{title}</div>;
+  return <div className={style.logo}>{title}</div>;
 };
 
 export default Logo;
