@@ -7,8 +7,8 @@ interface IItemProps {
   data: ITodo;
 }
 
-const Item: React.FC<IItemProps> = ({ data }) => {
-  const [checkbox, setCheckbox] = React.useState<boolean>(data.isComplete);
+const Item: React.FC<IItemProps> = ({ data: { isComplete, content } }) => {
+  const [checkbox, setCheckbox] = React.useState<boolean>(isComplete);
 
   const handleCheckbox = () => {
     setCheckbox(!checkbox);
@@ -27,7 +27,7 @@ const Item: React.FC<IItemProps> = ({ data }) => {
           <div className={style.deselect}></div>
         )}
       </div>
-      <div className={style.content}>{data.content}</div>
+      <div className={isComplete ? style.contentTextDone : style.contentText}>{content}</div>
       <div className={style.svgClose}>
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18">
           <path

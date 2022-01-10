@@ -4,10 +4,11 @@
   align-items: center
   justify-content: flex-start
   width: 370px
-  height: 60px
-  padding: 0 20px
-  border-bottom: 1px solid black
+  min-height: 60px
+  padding: 14px 20px
+  border-bottom: 1px solid var(--light-grayish-blue)
   border-radius: 4px
+  background: var(--very-light-gray)
 
 .checkbox
   display: flex
@@ -16,6 +17,7 @@
   width: 20px
   height: 20px
   margin-right: 20px
+  margin-bottom: 2px
   border-radius: 50%
   background: linear-gradient(120deg, hsl(192, 100%, 67%), hsl(280, 87%, 65%))
   cursor: pointer
@@ -25,7 +27,7 @@
   width: 20px
   height: 20px
   border-radius: 50%
-  border: 1px solid black
+  border: 1px solid var(--light-grayish-blue)
   background: white
 
   &:hover
@@ -33,14 +35,27 @@
     height: 18px
     border: none
 
-.content
+%text-style
+  width: 100px
   flex-grow: 1
+  color: var(--very-dark-grayish-blue)
+
+.contentText
+  @extend %text-style
+  
+
+.contentTextDone
+  @extend %text-style
+  text-decoration: line-through
 
 .svgClose
   margin-left: 10px
   padding-top: 4px
   cursor: pointer
-  opacity: 0.3
+  opacity: 1
+
+  & > svg path
+    fill: var(--dark-grayish-blue)
 
   &:hover
     opacity: 1

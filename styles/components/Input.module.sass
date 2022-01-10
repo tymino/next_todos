@@ -7,26 +7,51 @@
   padding: 0 20px
   margin-bottom: 20px
   border-radius: 4px
-  background: white
+  background: var(--very-light-gray)
 
 .addButton
-  width: 22px
+  position: relative
+  width: 20px
   height: 20px
   border-radius: 50%
-  border: 1px solid black
-  margin-bottom: 4px
-  margin-right: 18px
+  border: 1px solid var(--light-grayish-blue)
+  cursor: pointer
+  flex-shrink: 1
 
   &:hover
-    border: none
+    border: 1px solid var(--very-light-gray)
     background: linear-gradient(120deg, hsl(192, 100%, 67%), hsl(280, 87%, 65%))
 
+    &::after
+      content: ''
+      position: absolute
+      top: 8px
+      left: 4px
+      width: 10px
+      height: 2px
+      background: var(--very-light-gray)
+
+    &::before
+      content: ''
+      position: absolute
+      top: 4px
+      left: 8px
+      width: 2px
+      height: 10px
+      background: var(--very-light-gray)
 
 .input
   height: 60px
   width: 100%
+  margin-left: 18px
   border: none
   outline: none
+  background: var(--very-light-gray)
+  flex-shrink: 10
 
+  color: var(--very-dark-grayish-blue)
   font-size: 1rem
   font-family: var(--main-font)
+
+  &::placeholder
+    color: var(--dark-grayish-blue)

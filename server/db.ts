@@ -4,7 +4,7 @@ const store: ITodo[] = [
   {
     id: 'item-1',
     isComplete: true,
-    content: 'Complete online JavaScript course',
+    content: 'Complete online JavaScript course Complete online JavaScript course Complete online JavaScript course',
   },
   {
     id: 'item-2',
