@@ -1,20 +1,34 @@
-import React from 'react';
+import React, { useState } from 'react';
 import style from '../styles/components/Input.module.sass';
 
 interface IInputProps {
-  inputValue: string;
-  setInputValue: React.Dispatch<React.SetStateAction<string>>;
+  handleSubmit: (value: string) => void;
 }
 
-const Input: React.FC<IInputProps> = ({ inputValue, setInputValue }) => {
+const Input: React.FC<IInputProps> = ({ handleSubmit }) => {
+  const [input, setInput] = useState<string>('');
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
+    if (input.length >= 0 && input.length < 100) {
+      setInput(e.target.value);
+    }
+  };
+
+  const handleClick = () => {
+    handleSubmit(input);
+    setInput('');
   };
 
   return (
     <div className={style.container}>
-      <div className={style.addButton}></div>
-      <input className={style.input} type="text" value={inputValue} onChange={handleInputChange} placeholder="Create a new todo..." />
+      <div className={style.addButton} onClick={handleClick}></div>
+      <input
+        className={style.input}
+        type="text"
+        value={input}
+        onChange={handleInputChange}
+        placeholder="Create a new todo..."
+      />
     </div>
   );
 };

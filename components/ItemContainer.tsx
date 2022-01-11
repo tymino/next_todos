@@ -19,9 +19,11 @@ import ITodo from '../types/db';
 interface IItemContainer {
   items: ITodo[];
   setItems: React.Dispatch<React.SetStateAction<ITodo[]>>;
+  handleIsDoneTodo: (index: string) => void;
+  handleRemoveTodo: (index: string) => void;
 }
 
-const ItemContainer: React.FC<IItemContainer> = ({ items, setItems }) => {
+const ItemContainer: React.FC<IItemContainer> = ({ items, setItems, handleIsDoneTodo, handleRemoveTodo }) => {
   const reorder = (list: ITodo[], startIndex: number, endIndex: number): ITodo[] => {
     const [removed] = list.splice(startIndex, 1);
     list.splice(endIndex, 0, removed);
@@ -69,9 +71,8 @@ const ItemContainer: React.FC<IItemContainer> = ({ items, setItems }) => {
                         providedDraggable.draggableProps.style,
                         snapshotDraggable.isDragging,
                       )}>
-                      <Item data={item} />
+                      <Item data={item} handleIsDoneTodo={handleIsDoneTodo} handleRemoveTodo={handleRemoveTodo} />
                     </div>
-                    {/* {providedDraggable.placeholder} */}
                   </div>
                 )}
               </Draggable>

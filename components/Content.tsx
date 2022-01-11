@@ -17,34 +17,25 @@ interface IContentProps {
 
 const Content: React.FC<IContentProps> = ({ theme, changeTheme }) => {
   const [socket, setSocket] = useState<Socket>(io);
-  const [inputValue, setInputValue] = useState<string>('');
   const [items, setItems] = useState<ITodo[]>([]);
-  const [winReady, setwinReady] = useState<boolean>(false);
 
+  const [winReady, setwinReady] = useState<boolean>(false);
   useEffect(() => setwinReady(true), []);
 
-  const handleSubmit = async () => {
-    // socket.emit('test', value);
-    // setValue('');
+  const handleSubmit = async (value: string) => {
+    socket.emit('todos:add', value);
+  };
+  const handleIsDoneTodo = async (index: string) => {
+    socket.emit('todos:done', index);
+  };
+  const handleRemoveTodo = async (index: string) => {
+    socket.emit('todos:remove', index);
   };
 
   useEffect(() => {
-    socket.on('todos:init', (data: ITodo[]) => {
+    socket.on('todos:update', (data: ITodo[]) => {
       setItems(data);
     });
-
-    socket.on('test', (message: any) => {
-      // chat.push(message);
-      // setChat([...chat]);
-    });
-
-    // socket.on('connect', () => {
-    //   console.log('connect');
-    // });
-
-    // socket.on('disconnect', () => {
-    //   console.log('disconnect');
-    // });
   }, [socket]);
 
   return (
@@ -54,8 +45,15 @@ const Content: React.FC<IContentProps> = ({ theme, changeTheme }) => {
         <ToggleTheme theme={theme} changeTheme={changeTheme} />
       </header>
       <main className={styles.main}>
-        <Input inputValue={inputValue} setInputValue={setInputValue} />
-        {winReady ? <ItemContainer items={items} setItems={setItems} /> : null}
+        <Input handleSubmit={handleSubmit} />
+        {winReady ? (
+          <ItemContainer
+            items={items}
+            setItems={setItems}
+            handleIsDoneTodo={handleIsDoneTodo}
+            handleRemoveTodo={handleRemoveTodo}
+          />
+        ) : null}
       </main>
       <footer className={styles.footer}>Drag and drop to reorder list</footer>
     </div>
