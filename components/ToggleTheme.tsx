@@ -3,21 +3,16 @@ import style from '../styles/components/ToggleTheme.module.sass';
 
 interface IToggltThemeProps {
   theme: string;
-  changeTheme: (theme: string) => void;
+  toggleTheme: () => void;
 }
 
-const ToggleTheme: React.FC<IToggltThemeProps> = ({ theme, changeTheme }) => {
-  const handleChangeTheme = (e: React.MouseEvent<HTMLElement>) => {
-    const themeData = (e.currentTarget as HTMLElement).dataset.theme as string;
-    changeTheme(themeData);
-  };
-
+const ToggleTheme: React.FC<IToggltThemeProps> = ({ theme, toggleTheme }) => {
   return (
     <div className={style.container}>
       {theme === 'light' ? (
         <div
           className={style.wrapper}
-          onClick={handleChangeTheme}
+          onClick={toggleTheme}
           data-theme="dark">
           <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26">
             <path
@@ -30,7 +25,7 @@ const ToggleTheme: React.FC<IToggltThemeProps> = ({ theme, changeTheme }) => {
       ) : (
         <div
           className={style.wrapper}
-          onClick={handleChangeTheme}
+          onClick={toggleTheme}
           data-theme="light">
           <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26">
             <path

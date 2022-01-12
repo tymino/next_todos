@@ -18,12 +18,12 @@ import ITodo from '../types/db';
 
 interface IItemContainer {
   items: ITodo[];
-  setItems: React.Dispatch<React.SetStateAction<ITodo[]>>;
+  reorderTodos: (reorderItems: ITodo[]) => void;
   handleIsDoneTodo: (index: string) => void;
   handleRemoveTodo: (index: string) => void;
 }
 
-const ItemContainer: React.FC<IItemContainer> = ({ items, setItems, handleIsDoneTodo, handleRemoveTodo }) => {
+const ItemContainer: React.FC<IItemContainer> = ({ items, reorderTodos, handleIsDoneTodo, handleRemoveTodo }) => {
   const reorder = (list: ITodo[], startIndex: number, endIndex: number): ITodo[] => {
     const [removed] = list.splice(startIndex, 1);
     list.splice(endIndex, 0, removed);
@@ -33,14 +33,7 @@ const ItemContainer: React.FC<IItemContainer> = ({ items, setItems, handleIsDone
 
   const getItemStyle = (draggableStyle: any, isDragging: boolean) => ({
     userSelect: 'none',
-    background: isDragging ? 'lightgreen' : 'lightgrey',
-    borderRadius: '4px',
     ...draggableStyle,
-  });
-
-  const getListStyle = (isDraggingOver: boolean) => ({
-    background: isDraggingOver ? 'lightblue' : 'lightgrey',
-    borderRadius: '4px',
   });
 
   const onDragEnd = (result: DropResult) => {
@@ -48,7 +41,7 @@ const ItemContainer: React.FC<IItemContainer> = ({ items, setItems, handleIsDone
 
     const localItems: ITodo[] = reorder(items, result.source.index, result.destination.index);
 
-    setItems(localItems);
+    reorderTodos(localItems);
   };
 
   return (
@@ -57,7 +50,6 @@ const ItemContainer: React.FC<IItemContainer> = ({ items, setItems, handleIsDone
         {(provided: DroppableProvided, snapshot: DroppableStateSnapshot) => (
           <div
             ref={provided.innerRef}
-            style={getListStyle(snapshot.isDraggingOver)}
             {...provided.droppableProps}>
             {items.map((item: ITodo, index: number) => (
               <Draggable key={item.id} draggableId={item.id} index={index}>

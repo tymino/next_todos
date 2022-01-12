@@ -39,6 +39,11 @@ class Store {
 
     return this._store;
   }
+
+  reorderStore(reorderedStore: ITodo[]) {
+    this._store = reorderedStore;
+    return this._store;
+  }
 }
 
 export default new Store([

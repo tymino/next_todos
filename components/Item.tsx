@@ -10,13 +10,15 @@ interface IItemProps {
 }
 
 const Item: React.FC<IItemProps> = ({ data, handleIsDoneTodo, handleRemoveTodo }) => {
-  const handleCheckbox = () => handleIsDoneTodo(data.id);
-  const handleRemove = () => handleRemoveTodo(data.id);
+  const { id, isComplete, content } = data;
+
+  const handleCheckbox = () => handleIsDoneTodo(id);
+  const handleRemove = () => handleRemoveTodo(id);
 
   return (
     <div className={style.container}>
       <div className={style.checkbox} onClick={handleCheckbox}>
-        {data.isComplete ? (
+        {isComplete ? (
           <div>
             <svg xmlns="http://www.w3.org/2000/svg" width="11" height="9">
               <path fill="none" stroke="#FFF" strokeWidth="2" d="M1 4.304L3.696 7l6-6" />
@@ -26,8 +28,8 @@ const Item: React.FC<IItemProps> = ({ data, handleIsDoneTodo, handleRemoveTodo }
           <div className={style.deselect}></div>
         )}
       </div>
-      <div className={data.isComplete ? style.contentTextDone : style.contentText}>{data.content}</div>
-      <div className={style.svgClose} onClick={handleRemove}>
+      <div className={isComplete ? style.contentTextDone : style.contentText}>{content}</div>
+      <div className={style.svgRemove} onClick={handleRemove}>
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18">
           <path
             fill="#494C6B"

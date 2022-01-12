@@ -9,13 +9,14 @@ import Input from './Input';
 import ItemContainer from './ItemContainer';
 
 import ITodo from '../types/db';
+import EventName from '../types/EventName';
 
 interface IContentProps {
   theme: string;
-  changeTheme: (theme: string) => void;
+  toggleTheme: () => void;
 }
 
-const Content: React.FC<IContentProps> = ({ theme, changeTheme }) => {
+const Content: React.FC<IContentProps> = ({ theme, toggleTheme }) => {
   const [socket, setSocket] = useState<Socket>(io);
   const [items, setItems] = useState<ITodo[]>([]);
 
@@ -23,17 +24,22 @@ const Content: React.FC<IContentProps> = ({ theme, changeTheme }) => {
   useEffect(() => setwinReady(true), []);
 
   const handleSubmit = async (value: string) => {
-    socket.emit('todos:add', value);
+    socket.emit(EventName.TODOS_ADD, value);
   };
   const handleIsDoneTodo = async (index: string) => {
-    socket.emit('todos:done', index);
+    socket.emit(EventName.TODOS_DONE, index);
   };
   const handleRemoveTodo = async (index: string) => {
-    socket.emit('todos:remove', index);
+    socket.emit(EventName.TODOS_REMOVE, index);
+  };
+
+  const reorderTodos = async (reorderItems: ITodo[]) => {
+    setItems(reorderItems);
+    socket.emit(EventName.TODOS_REORDER, reorderItems);
   };
 
   useEffect(() => {
-    socket.on('todos:update', (data: ITodo[]) => {
+    socket.on(EventName.TODOS_UPDATE, (data: ITodo[]) => {
       setItems(data);
     });
   }, [socket]);
@@ -42,14 +48,14 @@ const Content: React.FC<IContentProps> = ({ theme, changeTheme }) => {
     <div className={styles.content}>
       <header className={styles.header}>
         <Logo title="todo" />
-        <ToggleTheme theme={theme} changeTheme={changeTheme} />
+        <ToggleTheme theme={theme} toggleTheme={toggleTheme} />
       </header>
       <main className={styles.main}>
         <Input handleSubmit={handleSubmit} />
         {winReady ? (
           <ItemContainer
             items={items}
-            setItems={setItems}
+            reorderTodos={reorderTodos}
             handleIsDoneTodo={handleIsDoneTodo}
             handleRemoveTodo={handleRemoveTodo}
           />
