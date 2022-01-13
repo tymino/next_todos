@@ -17,7 +17,7 @@ import Item from './Item';
 import ITodo from '../types/db';
 
 interface IItemContainer {
-  isSorted: boolean;
+  sortedActive: string;
   items: ITodo[];
   reorderTodos: (reorderItems: ITodo[]) => void;
   handleIsDoneTodo: (index: string) => void;
@@ -25,7 +25,7 @@ interface IItemContainer {
 }
 
 const ItemContainer: React.FC<IItemContainer> = ({
-  isSorted,
+  sortedActive,
   items,
   reorderTodos,
   handleIsDoneTodo,
@@ -44,7 +44,7 @@ const ItemContainer: React.FC<IItemContainer> = ({
   });
 
   const onDragEnd = (result: DropResult) => {
-    if (isSorted) return;
+    if (sortedActive !== null) return;
     if (!result.destination) return;
 
     const localItems: ITodo[] = reorder(items, result.source.index, result.destination.index);

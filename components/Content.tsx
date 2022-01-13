@@ -7,6 +7,7 @@ import Logo from './Logo';
 import ToggleTheme from './ToggleTheme';
 import Input from './Input';
 import ItemContainer from './ItemContainer';
+import ItemControl from './ItemControl';
 
 import ITodo from '../types/db';
 import EventName from '../types/EventName';
@@ -19,7 +20,10 @@ interface IContentProps {
 const Content: React.FC<IContentProps> = ({ theme, toggleTheme }) => {
   const [socket, setSocket] = useState<Socket>(io);
   const [items, setItems] = useState<ITodo[]>([]);
-  const [isSorted, setIsSorted] = useState<boolean>(false);
+
+  const [sortedActive, setSortedActive] = useState<string>('All');
+  const [sortedNames, setSortedNames] = useState<string[]>(['All', 'Active', 'Completed']);
+  const [sortedItems, setSortedItems] = useState<ITodo[]>([]);
 
   const [winReady, setwinReady] = useState<boolean>(false);
   useEffect(() => setwinReady(true), []);
@@ -33,10 +37,25 @@ const Content: React.FC<IContentProps> = ({ theme, toggleTheme }) => {
   const handleRemoveTodo = async (index: string) => {
     socket.emit(EventName.TODOS_REMOVE, index);
   };
+  const handleClearCompleted = async () => {
+    socket.emit(EventName.TODOS_CLEAR_COMPLETED);
+  };
 
   const reorderTodos = async (reorderItems: ITodo[]) => {
     setItems(reorderItems);
     socket.emit(EventName.TODOS_REORDER, reorderItems);
+  };
+
+  const handleSortTodos = (name: string) => {
+    if (name === sortedActive) return;
+
+    const filterItems = items.filter((item) => {
+      if (name === 'Active') return !item.isComplete;
+      if (name === 'Completed') return item.isComplete;
+    });
+
+    setSortedActive(name);
+    setSortedItems(filterItems);
   };
 
   useEffect(() => {
@@ -55,13 +74,20 @@ const Content: React.FC<IContentProps> = ({ theme, toggleTheme }) => {
         <Input handleSubmit={handleSubmit} />
         {winReady ? (
           <ItemContainer
-            isSorted={isSorted}
-            items={items}
+            sortedActive={sortedActive}
+            items={sortedActive !== 'All' ? sortedItems : items}
             reorderTodos={reorderTodos}
             handleIsDoneTodo={handleIsDoneTodo}
             handleRemoveTodo={handleRemoveTodo}
           />
         ) : null}
+        <ItemControl
+          itemLeft={sortedActive !== 'All' ? sortedItems.length : items.length}
+          sortedActive={sortedActive}
+          sortedNames={sortedNames}
+          handleSortTodos={handleSortTodos}
+          handleClearCompleted={handleClearCompleted}
+        />
       </main>
       <footer className={styles.footer}>Drag and drop to reorder list</footer>
     </div>
