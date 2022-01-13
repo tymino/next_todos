@@ -15,13 +15,13 @@ const useTheme = () => {
     let color3: string = '';
     let color4: string = '';
     let color5: string = '';
-  
+
     if (themeName === ThemeNames.Light) {
       color1 = 'hsl(0, 0%, 98%)';
       color2 = 'hsl(236, 33%, 92%)';
       color3 = 'hsl(233, 11%, 84%)';
-      color4 = 'hsl(236, 9%, 61%)';
-      color5 = 'hsl(235, 19%, 35%)';
+      color4 = 'hsl(235, 19%, 35%)';
+      color5 = 'hsl(236, 9%, 61%)';
     } else {
       color1 = 'hsl(235, 24%, 19%)';
       color2 = 'hsl(235, 21%, 11%)';
@@ -29,7 +29,7 @@ const useTheme = () => {
       color4 = 'hsl(234, 39%, 85%)';
       color5 = 'hsl(235, 19%, 35%)';
     }
-  
+
     document.querySelector<HTMLElement>(':root')?.style.setProperty('--very-light-gray', color1);
     document.querySelector<HTMLElement>(':root')?.style.setProperty('--very-light-grayish-blue', color2);
     document.querySelector<HTMLElement>(':root')?.style.setProperty('--light-grayish-blue', color3);
@@ -52,7 +52,10 @@ const useTheme = () => {
   useEffect(() => {
     const localTheme = localStorage.getItem(ThemeNames.StorageName);
 
-    if (localTheme) setTheme(localTheme);
+    if (localTheme) {
+      updateColorsTheme(localTheme);
+      setTheme(localTheme);
+    }
   }, []);
 
   return [theme, toggleTheme];
