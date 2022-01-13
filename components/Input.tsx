@@ -14,14 +14,18 @@ const Input: React.FC<IInputProps> = ({ handleSubmit }) => {
     }
   };
 
-  const handleClick = () => {
-    handleSubmit(input);
-    setInput('');
+  const handleClick = (event: React.FormEvent<HTMLElement>) => {
+    event.preventDefault();
+
+    if (input.length > 2) {
+      handleSubmit(input);
+      setInput('');
+    }
   };
 
   return (
-    <div className={style.container}>
-      <div className={style.addButton} onClick={handleClick}></div>
+    <form className={style.container}>
+      <button className={style.addButton} onClick={handleClick}></button>
       <input
         className={style.input}
         type="text"
@@ -29,7 +33,7 @@ const Input: React.FC<IInputProps> = ({ handleSubmit }) => {
         onChange={handleInputChange}
         placeholder="Create a new todo..."
       />
-    </div>
+    </form>
   );
 };
 
