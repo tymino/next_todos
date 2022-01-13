@@ -19,6 +19,7 @@ interface IContentProps {
 const Content: React.FC<IContentProps> = ({ theme, toggleTheme }) => {
   const [socket, setSocket] = useState<Socket>(io);
   const [items, setItems] = useState<ITodo[]>([]);
+  const [isSorted, setIsSorted] = useState<boolean>(false);
 
   const [winReady, setwinReady] = useState<boolean>(false);
   useEffect(() => setwinReady(true), []);
@@ -54,6 +55,7 @@ const Content: React.FC<IContentProps> = ({ theme, toggleTheme }) => {
         <Input handleSubmit={handleSubmit} />
         {winReady ? (
           <ItemContainer
+            isSorted={isSorted}
             items={items}
             reorderTodos={reorderTodos}
             handleIsDoneTodo={handleIsDoneTodo}

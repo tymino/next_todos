@@ -1,10 +1,27 @@
 import ITodo from '../types/db';
+import { v4 as uuid } from 'uuid';
 
 class Store {
   private _store: ITodo[];
 
   constructor() {
-    this._store = [];
+    this._store = [
+      {
+        id: 'weqwdsajdiasjciasjc',
+        isComplete: true,
+        content: 'Miss',
+      },
+      {
+        id: 'weqwdsajd1231easdsjc',
+        isComplete: false,
+        content: 'Hello World!',
+      },
+      {
+        id: 'weeqwdqadscjciasjc',
+        isComplete: false,
+        content: 'My name is Alex!',
+      },
+    ];
   }
 
   getStore() {
@@ -13,7 +30,7 @@ class Store {
 
   addItemToStore(content: string) {
     this._store.push({
-      id: `item-${this._store.length + 1}`,
+      id: uuid(),
       isComplete: false,
       content,
     });

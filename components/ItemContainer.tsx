@@ -1,5 +1,5 @@
 import React from 'react';
-import style from '../styles/components/ItemContainer.module.sass';
+// import style from '../styles/components/ItemContainer.module.sass';
 
 import {
   DragDropContext,
@@ -17,13 +17,20 @@ import Item from './Item';
 import ITodo from '../types/db';
 
 interface IItemContainer {
+  isSorted: boolean;
   items: ITodo[];
   reorderTodos: (reorderItems: ITodo[]) => void;
   handleIsDoneTodo: (index: string) => void;
   handleRemoveTodo: (index: string) => void;
 }
 
-const ItemContainer: React.FC<IItemContainer> = ({ items, reorderTodos, handleIsDoneTodo, handleRemoveTodo }) => {
+const ItemContainer: React.FC<IItemContainer> = ({
+  isSorted,
+  items,
+  reorderTodos,
+  handleIsDoneTodo,
+  handleRemoveTodo,
+}) => {
   const reorder = (list: ITodo[], startIndex: number, endIndex: number): ITodo[] => {
     const [removed] = list.splice(startIndex, 1);
     list.splice(endIndex, 0, removed);
@@ -37,6 +44,7 @@ const ItemContainer: React.FC<IItemContainer> = ({ items, reorderTodos, handleIs
   });
 
   const onDragEnd = (result: DropResult) => {
+    if (isSorted) return;
     if (!result.destination) return;
 
     const localItems: ITodo[] = reorder(items, result.source.index, result.destination.index);
@@ -48,9 +56,7 @@ const ItemContainer: React.FC<IItemContainer> = ({ items, reorderTodos, handleIs
     <DragDropContext onDragEnd={onDragEnd}>
       <Droppable droppableId="droppable">
         {(provided: DroppableProvided, snapshot: DroppableStateSnapshot) => (
-          <div
-            ref={provided.innerRef}
-            {...provided.droppableProps}>
+          <div ref={provided.innerRef} {...provided.droppableProps}>
             {items.map((item: ITodo, index: number) => (
               <Draggable key={item.id} draggableId={item.id} index={index}>
                 {(providedDraggable: DraggableProvided, snapshotDraggable: DraggableStateSnapshot) => (
@@ -63,7 +69,11 @@ const ItemContainer: React.FC<IItemContainer> = ({ items, reorderTodos, handleIs
                         providedDraggable.draggableProps.style,
                         snapshotDraggable.isDragging,
                       )}>
-                      <Item data={item} handleIsDoneTodo={handleIsDoneTodo} handleRemoveTodo={handleRemoveTodo} />
+                      <Item
+                        data={item}
+                        handleIsDoneTodo={handleIsDoneTodo}
+                        handleRemoveTodo={handleRemoveTodo}
+                      />
                     </div>
                   </div>
                 )}
