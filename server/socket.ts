@@ -33,6 +33,11 @@ const connectSocket = (server: any) => {
       const updatedStore = Store.reorderStore(reorderItems);
       updateClientTodos(updatedStore);
     });
+
+    socket.on(EventName.TODOS_CLEAR_COMPLETED, () => {
+      const updatedStore = Store.cleearCompleted();
+      updateClientTodos(updatedStore);
+    });
   });
 };
 

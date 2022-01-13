@@ -15,6 +15,7 @@ import {
 import Item from './Item';
 
 import ITodo from '../types/db';
+import SortedName from '../types/SortedName';
 
 interface IItemContainer {
   sortedActive: string;
@@ -44,7 +45,7 @@ const ItemContainer: React.FC<IItemContainer> = ({
   });
 
   const onDragEnd = (result: DropResult) => {
-    if (sortedActive !== null) return;
+    if (sortedActive !== SortedName.SORT_ALL) return;
     if (!result.destination) return;
 
     const localItems: ITodo[] = reorder(items, result.source.index, result.destination.index);

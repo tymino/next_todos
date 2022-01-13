@@ -11,6 +11,7 @@ import ItemControl from './ItemControl';
 
 import ITodo from '../types/db';
 import EventName from '../types/EventName';
+import SortedName from '../types/SortedName';
 
 interface IContentProps {
   theme: string;
@@ -18,11 +19,15 @@ interface IContentProps {
 }
 
 const Content: React.FC<IContentProps> = ({ theme, toggleTheme }) => {
-  const [socket, setSocket] = useState<Socket>(io);
+  const [socket] = useState<Socket>(io);
   const [items, setItems] = useState<ITodo[]>([]);
 
-  const [sortedActive, setSortedActive] = useState<string>('All');
-  const [sortedNames, setSortedNames] = useState<string[]>(['All', 'Active', 'Completed']);
+  const [sortedActive, setSortedActive] = useState<string>(SortedName.SORT_ALL);
+  const [sortedNames] = useState<string[]>([
+    SortedName.SORT_ALL,
+    SortedName.SORT_ACTIVE,
+    SortedName.SORT_COMPLETED,
+  ]);
   const [sortedItems, setSortedItems] = useState<ITodo[]>([]);
 
   const [winReady, setwinReady] = useState<boolean>(false);
@@ -47,11 +52,11 @@ const Content: React.FC<IContentProps> = ({ theme, toggleTheme }) => {
   };
 
   const handleSortTodos = (name: string) => {
-    if (name === sortedActive) return;
+    // if (name === sortedActive) return;
 
     const filterItems = items.filter((item) => {
-      if (name === 'Active') return !item.isComplete;
-      if (name === 'Completed') return item.isComplete;
+      if (name === SortedName.SORT_ACTIVE) return !item.isComplete;
+      if (name === SortedName.SORT_COMPLETED) return item.isComplete;
     });
 
     setSortedActive(name);
@@ -64,6 +69,12 @@ const Content: React.FC<IContentProps> = ({ theme, toggleTheme }) => {
     });
   }, [socket]);
 
+  useEffect(() => {
+    if (sortedActive === SortedName.SORT_ALL) return;
+    handleSortTodos(sortedActive);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [items]);
+
   return (
     <div className={styles.content}>
       <header className={styles.header}>
@@ -75,14 +86,14 @@ const Content: React.FC<IContentProps> = ({ theme, toggleTheme }) => {
         {winReady ? (
           <ItemContainer
             sortedActive={sortedActive}
-            items={sortedActive !== 'All' ? sortedItems : items}
+            items={sortedActive !== SortedName.SORT_ALL ? sortedItems : items}
             reorderTodos={reorderTodos}
             handleIsDoneTodo={handleIsDoneTodo}
             handleRemoveTodo={handleRemoveTodo}
           />
         ) : null}
         <ItemControl
-          itemLeft={sortedActive !== 'All' ? sortedItems.length : items.length}
+          itemLeft={sortedActive !== SortedName.SORT_ALL ? sortedItems.length : items.length}
           sortedActive={sortedActive}
           sortedNames={sortedNames}
           handleSortTodos={handleSortTodos}

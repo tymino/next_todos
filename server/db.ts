@@ -61,6 +61,13 @@ class Store {
     this._store = reorderedStore;
     return this._store;
   }
+
+  cleearCompleted() {
+    const newStore = this._store.filter((item) => !item.isComplete);
+    this._store = newStore;
+
+    return this._store;
+  }
 }
 
 export default new Store();
