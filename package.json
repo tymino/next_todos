@@ -1,6 +1,6 @@
 {
   "name": "next_todos",
-  "private": true,
+  "private": false,
   "scripts": {
     "dev": "nodemon",
     "build": "next build && tsc --project tsconfig.server.json",
